@@ -31,9 +31,9 @@ struct LedArgs {
 impl Led {
     pub async fn execute(&self) -> Result<()> {
         let led = LedControl::new(
-            "/path/to/red/led",
-            "/path/to/green/led",
-            "/path/to/blue/led",
+            "/sys/class/leds/red-led/brightness",
+            "/sys/class/leds/green-led/brightness",
+            "/sys/class/leds/blue-led/brightness",
         );
 
         match &self.command {
