@@ -22,9 +22,9 @@ enum MotionSensorCommands {
 impl MotionSensor {
     pub async fn execute(&self) -> Result<()> {
         let motion_sensor = MotionSensorControl::new(
-            "/sys/bus/iio/devices/iio:device0/in_accel_x_raw",
-            "/sys/bus/iio/devices/iio:device0/in_accel_y_raw",
-            "/sys/bus/iio/devices/iio:device0/in_accel_z_raw",
+            "/sys/bus/iio/devices/iio:device1/in_anglvel_x_raw",
+            "/sys/bus/iio/devices/iio:device1/in_anglvel_y_raw",
+            "/sys/bus/iio/devices/iio:device1/in_anglvel_z_raw",
         );
 
         match &self.command {

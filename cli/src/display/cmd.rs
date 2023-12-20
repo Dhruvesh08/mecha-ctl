@@ -24,7 +24,7 @@ enum DisplayCommands {
 impl Display {
     pub async fn execute(&self) -> Result<()> {
         // Use match to handle errors when creating a new DisplayControl instance
-        let display = match DisplayControl::new("path/to/display") {
+        let display = match DisplayControl::new("/sys/class/backlight/backlight/brightness") {
             Ok(display) => display,
             Err(err) => {
                 println!("Error: {}", err);

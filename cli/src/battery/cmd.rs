@@ -24,8 +24,8 @@ impl Battery {
         match &self.command {
             BatteryCommands::Info => {
                 let battery = Power {
-                    path: "/path/of/battery".to_string(),
-                    currnet_now: "/path/of/battery/current".to_string(),
+                    path: "/sys/class/power_supply/bq27441-0/uevent".to_string(),
+                    currnet_now: "/sys/class/power_supply/bq27441-0/current_now".to_string(),
                 };
 
                 let _ = match battery.info() {
