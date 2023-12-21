@@ -8,7 +8,7 @@ mod network_ctl_service;
 pub use network_ctl_service::{NetworkManager, NetworkManagerServiceServer};
 
 mod display_ctl_service;
-pub use display_ctl_service::{DisplayControl, DisplayCtrlServiceServer};
+pub use display_ctl_service::{DisplayControl, DisplayCtrlServiceServer, Display};
 
 mod led_ctl_service;
 pub use led_ctl_service::{LedControl, LedctlManager, LedctlServiceServer};

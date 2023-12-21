@@ -1,5 +1,6 @@
 use anyhow::Result;
 use mecha_cpu_governor_ctl::CpuGovernanceCtl;
+use mecha_display_ctl::DisplayControl;
 use mecha_led_ctl::LedControl;
 use mecha_metrics_ctl::DeviceMetricsCtl;
 use mecha_motion_sensor_ctl::MotionSensorControl;
@@ -19,14 +20,14 @@ use crate::services::{Bluetooth, BluetoothServiceServer};
 use crate::services::{CpuCtlService, CpuGovernorCtlServiceServer};
 use crate::services::{DeviceInfoCtl, DeviceInfoCtlServiceServer};
 use crate::services::{DeviceMetricsService, MetricsServiceServer};
+use crate::services::{Display, DisplayCtrlServiceServer};
 use crate::services::{LedctlManager, LedctlServiceServer};
 use crate::services::{MotionSensorControlServiceServer, MotionSensorManager};
 use crate::services::{NetworkManager, NetworkManagerServiceServer};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let profile_file = File::open("./Config.yml")
-        .expect("Failed to open config file");
+    let profile_file = File::open("./Config.yml").expect("Failed to open config file");
     let reader = BufReader::new(profile_file);
 
     let config: BaseConfig = serde_yaml::from_reader(reader).expect("unable to rad yaml file");
@@ -86,6 +87,10 @@ async fn main() -> Result<()> {
         motion_sensor: motion_sensor,
     };
 
+    //display manager service
+    let display_ctrl = DisplayControl::new(config.interfaces.display.device.as_str()).unwrap();
+    let display_service = Display { display_ctrl };
+
     println!("Mecha Edge Server listening on {}", addr);
 
     let subscriber = tracing_subscriber::fmt()
@@ -108,6 +113,7 @@ async fn main() -> Result<()> {
         .add_service(MetricsServiceServer::new(device_metrics))
         .add_service(CpuGovernorCtlServiceServer::new(cpu_ctl))
         .add_service(LedctlServiceServer::new(led_ctl))
+        .add_service(DisplayCtrlServiceServer::new(display_service))
         .add_service(MotionSensorControlServiceServer::new(motion_senso_service))
         .serve(addr)
         .await?;
