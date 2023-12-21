@@ -5,6 +5,7 @@ pub use mecha_battery_ctl::{Battery as Power, PowerSupplyInfo};
 
 use crate::battery::{BatteryError, BatteryErrorCodes};
 
+use crate::configs::BaseConfig;
 use crate::output_message::{Message, StdOut, BATTERY};
 
 #[derive(Debug, Args)]
@@ -20,12 +21,14 @@ enum BatteryCommands {
 }
 
 impl Battery {
-    pub async fn execute(&self) -> Result<()> {
+    pub async fn execute(&self, config: &BaseConfig) -> Result<()> {
         match &self.command {
             BatteryCommands::Info => {
+                let battery_path = config.interfaces.battery.device.clone();
+                StdOut::info(&format!("Battery path : {}", battery_path), Some(BATTERY));
                 let battery = Power {
-                    path: "/sys/class/power_supply/bq27441-0/uevent".to_string(),
-                    currnet_now: "/sys/class/power_supply/bq27441-0/current_now".to_string(),
+                    path: "/path/of/battery".to_string(),
+                    currnet_now: "/path/of/battery/current".to_string(),
                 };
 
                 let _ = match battery.info() {
