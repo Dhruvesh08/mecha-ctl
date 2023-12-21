@@ -25,7 +25,7 @@ use crate::services::{NetworkManager, NetworkManagerServiceServer};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let profile_file = File::open("/home/jack/mecha/rust/mecha-ctl/server/Config.yml")
+    let profile_file = File::open("./Config.yml")
         .expect("Failed to open config file");
     let reader = BufReader::new(profile_file);
 
